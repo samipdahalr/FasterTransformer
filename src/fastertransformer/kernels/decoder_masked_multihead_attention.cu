@@ -77,7 +77,8 @@ namespace mmha {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T, int Dh>
-struct Qk_vec_ {};
+struct Qk_vec_ {
+};
 
 template<>
 struct Qk_vec_<float, 32> {
@@ -132,7 +133,8 @@ struct Qk_vec_<__nv_bfloat16, 256> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T, int THREADS_PER_KEY>
-struct K_vec_ {};
+struct K_vec_ {
+};
 
 template<>
 struct K_vec_<float, 4> {
@@ -175,7 +177,8 @@ struct K_vec_<__nv_bfloat16, 1> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T, int V_VEC_SIZE>
-struct V_vec_ {};
+struct V_vec_ {
+};
 
 template<>
 struct V_vec_<float, 1> {
@@ -219,7 +222,8 @@ struct V_vec_<__nv_bfloat16, 8> {
 
 #ifdef MMHA_USE_FP32_ACUM_FOR_FMA
 template<typename T>
-struct Qk_vec_acum_fp32_ {};
+struct Qk_vec_acum_fp32_ {
+};
 
 template<>
 struct Qk_vec_acum_fp32_<float> {
@@ -246,7 +250,8 @@ struct Qk_vec_acum_fp32_<uint2> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 template<typename T>
-struct K_vec_acum_fp32_ {};
+struct K_vec_acum_fp32_ {
+};
 
 template<>
 struct K_vec_acum_fp32_<float> {
@@ -278,7 +283,8 @@ struct K_vec_acum_fp32_<uint4> {
 
 #ifdef MMHA_USE_FP32_ACUM_FOR_OUT
 template<typename T>
-struct V_vec_acum_fp32_ {};
+struct V_vec_acum_fp32_ {
+};
 
 template<>
 struct V_vec_acum_fp32_<float> {
@@ -1296,6 +1302,9 @@ void multihead_attention_(const KERNEL_PARAMS_TYPE& params, const cudaStream_t& 
             break;
         case 64:
             mmha_launch_kernel<T, 64, 64, KERNEL_PARAMS_TYPE>(params, stream);
+            break;
+        case 80:
+            mmha_launch_kernel<T, 80, 128, KERNEL_PARAMS_TYPE>(params, stream);
             break;
         case 96:
             mmha_launch_kernel<T, 96, 128, KERNEL_PARAMS_TYPE>(params, stream);
